@@ -60,12 +60,38 @@ def main():
 
     # running Main loop
     running = True
+    # selected square
+    sq_selected = ()  # no square is selected initially, keep track of the last click of the user
+    # 2 tuples --> [(first click),(destination click)]; keep track player clicks
+    player_clicks = []
 
     while running:
         # reading inputs during the game loop
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+            # Adding mouse events
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                location = pygame.mouse.get_pos()  # x,y position of the mouse pointer
+                mouse_column = location[0]//SQ_SIZE  # x coordinate
+                mouse_row = location[1]//SQ_SIZE  # y coordinate
+                # same square was selected twice
+                if sq_selected == (mouse_row, mouse_column):
+                    sq_selected = ()  # return to not selected
+                    player_clicks = []  # resetting the clicks tuples
+                else:
+                    sq_selected = (mouse_row, mouse_column)
+                    # append both first and second clicks
+                    player_clicks.append(sq_selected)
+                if len(player_clicks) == 2:  # after the second click
+                    move = chess_engine.Move(
+                        player_clicks[0], player_clicks[1], gs.board)
+                    print(move.get_chess_notation())  # getting the notations
+                    gs.make_move(move)
+                    sq_selected = ()  # resetting the selected square
+                    player_clicks = []  # resettin the player clicks
+
         # drawing the board
         draw_game_state(screen, gs)
         clock.tick(FPS)
