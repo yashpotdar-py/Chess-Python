@@ -76,7 +76,6 @@ def main():
 
             # Quitting the game
             if event.type == pygame.QUIT:
-                pygame.quit()
                 running = False
 
             # Adding mouse events
