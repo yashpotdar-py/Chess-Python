@@ -55,6 +55,11 @@ def main():
     gs = chess_engine.GameState()
     # print(gs.board)
 
+    # generate valid moves
+    valid_moves = gs.get_valid_moves()  # an expensive operation
+
+    move_made = False  # Flag variable fo when a move is made
+
     # Loading the images
     load_images()
 
@@ -68,30 +73,51 @@ def main():
     while running:
         # reading inputs during the game loop
         for event in pygame.event.get():
+
+            # Quitting the game
             if event.type == pygame.QUIT:
+                pygame.quit()
                 running = False
 
             # Adding mouse events
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 location = pygame.mouse.get_pos()  # x,y position of the mouse pointer
-                mouse_column = location[0]//SQ_SIZE  # x coordinate
-                mouse_row = location[1]//SQ_SIZE  # y coordinate
+                mouse_column = location[0] // SQ_SIZE  # x coordinate
+                mouse_row = location[1] // SQ_SIZE  # y coordinate
                 # same square was selected twice
-                if sq_selected == (mouse_row, mouse_column):
+                if sq_selected == (mouse_row, mouse_column) or (mouse_column >= 8):
                     sq_selected = ()  # return to not selected
                     player_clicks = []  # resetting the clicks tuples
                 else:
                     sq_selected = (mouse_row, mouse_column)
                     # append both first and second clicks
                     player_clicks.append(sq_selected)
+
                 if len(player_clicks) == 2:  # after the second click
                     move = chess_engine.Move(
                         player_clicks[0], player_clicks[1], gs.board)
                     print(move.get_chess_notation())  # getting the notations
-                    gs.make_move(move)
-                    sq_selected = ()  # resetting the selected square
-                    player_clicks = []  # resettin the player clicks
+                    for i in range(len(valid_moves)):
+                        if move in valid_moves[i]:
+                            gs.make_move(move)
+                            move_made = True
+                            sq_selected = ()
+                            player_clicks = [] 
+                    if not move_made:
+                        player_clicks = [sq_selected]
+                     
 
+            # Keys Handler
+            elif event.type == pygame.KEYDOWN:
+                # Undo move
+                if event.key == pygame.K_z:
+                    gs.undo_move()
+                    move_made = True
+
+        if move_made:
+            valid_moves = gs.get_valid_moves()
+            move_made = False
+        
         # drawing the board
         draw_game_state(screen, gs)
         clock.tick(FPS)
