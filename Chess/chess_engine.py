@@ -62,7 +62,7 @@ class GameState:
             for col in range(len(self.board[row])):
                 turn = self.board[row][col][0]  # checking whose turn it is
                 if (turn == 'w' and self.white_to_move) or (
-                    turn == 'b' and not self.white_to_move):
+                        turn == 'b' and not self.white_to_move):
                     # checking for the piece type
                     piece = self.board[row][col][1]
                     self.move_funcions[piece](row, col, moves)
@@ -114,7 +114,7 @@ class GameState:
             for i in range(1, 8):
                 end_row = row + direction[0] * i
                 end_col = col + direction[1] * i
-                if 0 <= end_row <8 and 0 <= end_col <8:  # check for possible moves only in boundaries of the board
+                if 0 <= end_row < 8 and 0 <= end_col < 8:  # check for possible moves only in boundaries of the board
                     end_piece = self.board[end_row][end_col]
                     if end_piece == "--":  # empty space is valid
                         moves.append(
@@ -138,7 +138,7 @@ class GameState:
         for move in knight_moves:
             end_row = row + move[0]
             end_col = col + move[1]
-            if 0 <= end_row <8 and 0 <= end_col <8:
+            if 0 <= end_row < 8 and 0 <= end_col < 8:
                 end_piece = self.board[end_row][end_col]
                 # so its either enemy piece or empty square
                 if end_piece[0] != ally_color:
@@ -155,7 +155,7 @@ class GameState:
             for i in range(1, 8):
                 end_row = row + direction[0] * i
                 end_col = col + direction[1] * i
-                if 0 <= end_row <8 and 0 <= end_col <8:  # check if the move is on board
+                if 0 <= end_row < 8 and 0 <= end_col < 8:  # check if the move is on board
                     end_piece = self.board[end_row][end_col]
                     if end_piece == "--":  # empty space is valid
                         moves.append(
@@ -184,6 +184,11 @@ class GameState:
         for i in range(8):
             end_row = row+king_moves[i][0]
             end_col = row+king_moves[i][1]
+            if 0 <= end_row < 8 and 0 <= end_col < 8:
+                end_piece = self.board[end_row][end_col]
+                if end_piece[0] != ally_color:
+                    moves.append(
+                        Move((row, col), (end_row, end_col), self.board))
 
 
 """Move class"""

@@ -97,15 +97,11 @@ def main():
                     move = chess_engine.Move(
                         player_clicks[0], player_clicks[1], gs.board)
                     print(move.get_chess_notation())  # getting the notations
-                    for i in range(len(valid_moves)):
-                        if move in valid_moves[i]:
-                            gs.make_move(move)
-                            move_made = True
-                            sq_selected = ()
-                            player_clicks = [] 
-                    if not move_made:
-                        player_clicks = [sq_selected]
-                     
+                    if move in valid_moves:
+                        gs.make_move(move)
+                        move_made = True
+                        sq_selected = ()
+                        player_clicks = []
 
             # Keys Handler
             elif event.type == pygame.KEYDOWN:
@@ -117,7 +113,7 @@ def main():
         if move_made:
             valid_moves = gs.get_valid_moves()
             move_made = False
-        
+
         # drawing the board
         draw_game_state(screen, gs)
         clock.tick(FPS)
