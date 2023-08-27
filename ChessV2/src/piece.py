@@ -8,7 +8,7 @@ import os
 '''This is the parent class. Other classes inherit this class'''
 class Piece:
 
-    def __init_(self, name, color, value, texture=None, texture_rect=None):
+    def __init__(self, name, color, value, texture=None, texture_rect=None):
 
         self.name = name
         self.color = color
@@ -17,6 +17,9 @@ class Piece:
         value_sign = 1 if color == 'white' else -1
         self.value = value * value_sign
 
+        self.moves = []
+        self.moved = False
+        
         # Setting the images for the pieces
         self.texture = texture
         self.set_texture()
@@ -28,8 +31,11 @@ class Piece:
 
         # Locating the path to the images
         self.texture = os.path.join(
-            f'assets\\images\\imgs-{size}px\\{self.color}_{self.name}.png'
+            f'C:\\Users\\Yash\\Desktop\\Chess-Python\\ChessV2\\assets\\images\\imgs-{size}px\\{self.color}_{self.name}.png'
         )
+
+    def add_moves(self, move):
+        self.moves.append(move)
 
 
 '''This class is resonsible for the attributes of the pawn piece'''

@@ -35,6 +35,7 @@ class Main:
 
             # Drawing the grid pattern
             game.show_background(screen)
+            game.show_pieces(screen)
 
             # Handling events that take place during the game
             for event in pygame.event.get():
