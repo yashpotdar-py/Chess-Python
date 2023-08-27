@@ -34,7 +34,7 @@ class Piece:
             f'C:\\Users\\Yash\\Desktop\\Chess-Python\\ChessV2\\assets\\images\\imgs-{size}px\\{self.color}_{self.name}.png'
         )
 
-    def add_moves(self, move):
+    def add_move(self, move):
         self.moves.append(move)
 
 

@@ -32,8 +32,9 @@ class Game:
                 pygame.draw.rect(surface, color, rect)
 
     '''This method is responsible for rendering the pieces on the board'''
+
     def show_pieces(self, surface):
-        
+
         # Looping through the board
         for row in range(ROWS):
             for col in range(COLS):
@@ -44,9 +45,24 @@ class Game:
                     # All pieces besides the dragger piece
                     if piece is not self.dragger.piece:
                         piece.set_texture(size=80)
-                        img  = pygame.image.load(piece.texture)
+                        img = pygame.image.load(piece.texture)
                         #  centering the image to the grid square
                         img_center = col*SQ_SIZE + SQ_SIZE//2, row*SQ_SIZE + SQ_SIZE//2
                         piece.texture_rect = img.get_rect(center=img_center)
 
                         surface.blit(img, piece.texture_rect)
+
+    def show_moves(self, surface):
+
+        if self.dragger.dragging:
+            piece = self.dragger.piece
+
+            # looping all possible moves
+            for move in piece.moves:
+                # color
+                color = '#C86464' if (
+                    move.final.row + move.final.col) % 2 == 0 else '#C84646'  # light and dark respectivley
+                # rect
+                rect = (move.final.col*SQ_SIZE, move.final.row*SQ_SIZE, SQ_SIZE, SQ_SIZE)
+                # blit
+                pygame.draw.rect(surface, color, rect)

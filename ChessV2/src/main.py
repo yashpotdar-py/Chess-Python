@@ -37,6 +37,7 @@ class Main:
 
             # Drawing the grid pattern
             game.show_background(screen)
+            game.show_moves(screen)
             game.show_pieces(screen)
 
             if dragger.dragging:
@@ -56,8 +57,15 @@ class Main:
                     if board.squares[clicked_row][clicked_col].has_piece():
                         piece = board.squares[clicked_row][clicked_col].piece
 
+                        board.calc_moves(piece, clicked_row, clicked_col)
+
                         dragger.save_initial(event.pos)
                         dragger.drag_piece(piece)
+
+                        # Show methods
+                        game.show_background(screen)
+                        game.show_moves(screen)
+                        game.show_pieces(screen)
 
                 elif event.type == pygame.MOUSEMOTION:  # the motion of cursor after click
                     if dragger.dragging:
@@ -65,6 +73,7 @@ class Main:
                         
                         # to prevent trailing image of the dragged piece
                         game.show_background(screen)
+                        game.show_moves(screen)
                         game.show_pieces(screen)
                         
                         dragger.update_blit(screen)
