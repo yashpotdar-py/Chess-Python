@@ -1,6 +1,7 @@
 import pygame
 from const import *
 from board import Board
+from dragger import Dragger
 
 """
 This file handles the graphics of the game.
@@ -12,6 +13,7 @@ class Game:
 
     def __init__(self):
         self.board = Board()
+        self.dragger = Dragger()
 
     '''This method is responsible for rendering the background of the chess board'''
 
@@ -39,9 +41,12 @@ class Game:
                 if self.board.squares[row][col].has_piece():
                     piece = self.board.squares[row][col].piece
 
-                    img  = pygame.image.load(piece.texture)
-                    #  centering the image to the grid square
-                    img_center = col*SQ_SIZE + SQ_SIZE//2, row*SQ_SIZE + SQ_SIZE//2
-                    piece.texture_rect = img.get_rect(center=img_center)
+                    # All pieces besides the dragger piece
+                    if piece is not self.dragger.piece:
+                        piece.set_texture(size=80)
+                        img  = pygame.image.load(piece.texture)
+                        #  centering the image to the grid square
+                        img_center = col*SQ_SIZE + SQ_SIZE//2, row*SQ_SIZE + SQ_SIZE//2
+                        piece.texture_rect = img.get_rect(center=img_center)
 
-                    surface.blit(img, piece.texture_rect)
+                        surface.blit(img, piece.texture_rect)
